@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kodon — AI that works the way you do</title>
-    <base href="/kodon-web/" />
+    <base href="./" />
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="kologo.png" />
@@ -26,6 +26,14 @@
         <a href="." class="reload">Reload</a>
         <span class="dismiss">🗙</span>
     </div>
+    <script>
+        document.addEventListener("click", function (event) {
+            const link = event.target instanceof Element ? event.target.closest("a") : null;
+            if (!link || !link.getAttribute("href")?.startsWith("/")) return;
+            const projectPrefix = location.pathname.startsWith("/kodon-web") ? "/kodon-web" : "";
+            link.href = projectPrefix + link.getAttribute("href");
+        }, true);
+    </script>
     <script src="_framework/blazor.webassembly.js"></script>
 </body>
 
