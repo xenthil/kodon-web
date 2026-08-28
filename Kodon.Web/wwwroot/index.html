@@ -27,12 +27,17 @@
         <span class="dismiss">🗙</span>
     </div>
     <script>
-        document.addEventListener("click", function (event) {
-            const link = event.target instanceof Element ? event.target.closest("a") : null;
-            if (!link || !link.getAttribute("href")?.startsWith("/")) return;
+        function normalizeInternalLinks() {
             const projectPrefix = location.pathname.startsWith("/kodon-web") ? "/kodon-web" : "";
-            link.href = projectPrefix + link.getAttribute("href");
-        }, true);
+            document.querySelectorAll('a[href^="/"]').forEach(function (link) {
+                const path = link.getAttribute("href");
+                if (path && !path.startsWith(projectPrefix + "/")) {
+                    link.setAttribute("href", projectPrefix + path);
+                }
+            });
+        }
+        new MutationObserver(normalizeInternalLinks).observe(document.body, { childList: true, subtree: true });
+        normalizeInternalLinks();
     </script>
     <script src="_framework/blazor.webassembly.js"></script>
 </body>
