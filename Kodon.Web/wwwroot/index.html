@@ -36,7 +36,7 @@
                 }
             });
         }
-        new MutationObserver(normalizeInternalLinks).observe(document.body, { childList: true, subtree: true });
+        new MutationObserver(normalizeInternalLinks).observe(document.body, { childList: true, attributes: true, attributeFilter: ["href"], subtree: true });
         normalizeInternalLinks();
     </script>
     <script src="_framework/blazor.webassembly.js"></script>
