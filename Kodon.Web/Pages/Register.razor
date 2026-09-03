@@ -1,4 +1,36 @@
 @page "/register"
 @page "/registration"
 <PageTitle>Create account — Kodon</PageTitle>
-<section class="auth-page section-wrap"><div class="auth-card"><a class="brand auth-brand" href="/"><img src="ko-logo.png" alt="Kodon" /></a><div class="eyebrow">GET STARTED</div><h1>Make space for <em>better work.</em></h1><label>Full name<input type="text" placeholder="Your name" /></label><label>Work email<input type="email" placeholder="you@company.com" /></label><label>Create password<input type="password" placeholder="At least 8 characters" /></label><button class="button button-dark full-button" type="button">Create account ↗</button><div class="auth-note">By continuing, you agree to our <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>.</div><div class="auth-note">Already have an account? <a href="/login">Sign in</a></div></div></section>
+<section class="auth-page section-wrap"><div class="auth-card"><a class="brand auth-brand" href="/"><img src="ko-logo.png" alt="Kodon" /></a><div class="eyebrow">GET STARTED</div><h1>Make space for <em>better work.</em></h1>
+    <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <label>Full name<InputText @bind-Value="model.FullName" placeholder="Your name" autocomplete="name" /><ValidationMessage For="@(() => model.FullName)" /></label>
+        <label>Work email<InputText @bind-Value="model.Email" type="email" placeholder="you@company.com" autocomplete="email" /><ValidationMessage For="@(() => model.Email)" /></label>
+        <label>Create password<InputText @bind-Value="model.Password" type="password" placeholder="At least 8 characters" autocomplete="new-password" /><ValidationMessage For="@(() => model.Password)" /></label>
+        <button class="button button-dark full-button" type="submit">Create account ↗</button>
+        @if (submitted) { <p class="form-success" role="status">Your account details are valid. Registration will be connected when the backend is available.</p> }
+    </EditForm>
+    <div class="auth-note">By continuing, you agree to our <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>.</div><div class="auth-note">Already have an account? <a href="/login">Sign in</a></div></div></section>
+
+@code {
+    private readonly RegistrationModel model = new();
+    private bool submitted;
+
+    private void HandleValidSubmit() => submitted = true;
+
+    private sealed class RegistrationModel
+    {
+        [Required(ErrorMessage = "Full name is required.")]
+        [StringLength(100, MinimumLength = 2, ErrorMessage = "Enter your full name.")]
+        public string FullName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Email address is required.")]
+        [EmailAddress(ErrorMessage = "Enter a valid email address.")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Password is required.")]
+        [MinLength(8, ErrorMessage = "Password must be at least 8 characters.")]
+        public string Password { get; set; } = string.Empty;
+    }
+}

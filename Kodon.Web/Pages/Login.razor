@@ -1,3 +1,33 @@
 @page "/login"
 <PageTitle>Sign in — Kodon</PageTitle>
-<section class="auth-page section-wrap"><div class="auth-card"><a class="brand auth-brand" href="/"><img src="ko-logo.png" alt="Kodon" /></a><div class="eyebrow">WELCOME BACK</div><h1>Sign in to your <em>workspace.</em></h1><label>Email address<input type="email" placeholder="you@company.com" /></label><label>Password<input type="password" placeholder="••••••••" /></label><div class="auth-row"><label class="checkbox"><input type="checkbox" /> Remember me</label><a href="mailto:support@kodon.ai">Forgot password?</a></div><button class="button button-dark full-button" type="button">Sign in ↗</button><div class="auth-note">New to Kodon? <a href="/register">Create an account</a></div></div></section>
+<section class="auth-page section-wrap"><div class="auth-card"><a class="brand auth-brand" href="/"><img src="ko-logo.png" alt="Kodon" /></a><div class="eyebrow">WELCOME BACK</div><h1>Sign in to your <em>workspace.</em></h1>
+    <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <label>Email address<InputText @bind-Value="model.Email" type="email" placeholder="you@company.com" autocomplete="email" /><ValidationMessage For="@(() => model.Email)" /></label>
+        <label>Password<InputText @bind-Value="model.Password" type="password" placeholder="••••••••" autocomplete="current-password" /><ValidationMessage For="@(() => model.Password)" /></label>
+        <div class="auth-row"><label class="checkbox"><InputCheckbox @bind-Value="model.RememberMe" /> Remember me</label><a href="mailto:support@kodon.ai">Forgot password?</a></div>
+        <button class="button button-dark full-button" type="submit">Sign in ↗</button>
+        @if (submitted) { <p class="form-success" role="status">Your sign-in details are valid. Authentication will be connected when the backend is available.</p> }
+    </EditForm>
+    <div class="auth-note">New to Kodon? <a href="/register">Create an account</a></div></div></section>
+
+@code {
+    private readonly LoginModel model = new();
+    private bool submitted;
+
+    private void HandleValidSubmit() => submitted = true;
+
+    private sealed class LoginModel
+    {
+        [Required(ErrorMessage = "Email address is required.")]
+        [EmailAddress(ErrorMessage = "Enter a valid email address.")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Password is required.")]
+        [MinLength(8, ErrorMessage = "Password must be at least 8 characters.")]
+        public string Password { get; set; } = string.Empty;
+
+        public bool RememberMe { get; set; }
+    }
+}
