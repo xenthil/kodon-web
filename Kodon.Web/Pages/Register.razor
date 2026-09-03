@@ -1,6 +1,7 @@
 @page "/register"
 @page "/registration"
 <PageTitle>Create account — Kodon</PageTitle>
+<PageHeader />
 <section class="auth-page section-wrap"><div class="auth-card"><a class="brand auth-brand" href="/"><img src="ko-logo.png" alt="Kodon" /></a><div class="eyebrow">GET STARTED</div><h1>Make space for <em>better work.</em></h1>
     <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
