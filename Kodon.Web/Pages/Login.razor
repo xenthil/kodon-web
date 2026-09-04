@@ -7,7 +7,7 @@
         <ValidationSummary />
         <label>Email address<InputText @bind-Value="model.Email" type="email" placeholder="you@company.com" autocomplete="email" /><ValidationMessage For="@(() => model.Email)" /></label>
         <label>Password<InputText @bind-Value="model.Password" type="password" placeholder="••••••••" autocomplete="current-password" /><ValidationMessage For="@(() => model.Password)" /></label>
-        <div class="auth-row"><label class="checkbox"><InputCheckbox @bind-Value="model.RememberMe" /> Remember me</label><a href="mailto:support@kodon.ai">Forgot password?</a></div>
+        <div class="auth-row"><label class="checkbox"><InputCheckbox @bind-Value="model.RememberMe" /> Remember me</label><a href="/forgot-password">Forgot password?</a></div>
         <button class="button button-dark full-button" type="submit">Sign in ↗</button>
         @if (submitted) { <p class="form-success" role="status">Your sign-in details are valid. Authentication will be connected when the backend is available.</p> }
     </EditForm>
